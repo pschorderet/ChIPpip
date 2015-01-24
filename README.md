@@ -28,4 +28,4 @@ Once ChIPpip has been run, users are literally two clicks away from metagene ana
 
 
 ### Tutorial
-A tutorial can be found in the Vignette folder. This accompanies new users through a the entire analysis of a test dataset provided as part of the package.
+A tutorial can be found in the Vignette folder. This accompanies new users through the entire analysis of a test dataset provided as part of the package.
