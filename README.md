@@ -1,4 +1,4 @@
-## ChIPpip: ChIPseq pipeline for biologists
+## ChIPpip: ChIPseq pipelines made easy
 
 ChIPpip is a perl/R package that supports the analysis of next generation sequencing (NGS) data as part of NEAT (NGS easy analysis toolkit). It is a versatile and easily configurable tool that allows users to go from compressed fastq files (.fastq.gz) to bigwigs using a single command line. One central feature of ChIPpip is its ability to perform various tasks on complex sample setups while managing batch submissions and cluster queuing. ChIPpip can easily be implemented in any institution with limited to no programming knowledge. The workflow has been designed to efficiently run on a computer cluster using a distributed resource manager such as TORQUE. ChIPpip has been developed by and for wet-lab scientists as well as bioinformaticiens to ensure user-friendliness, management of complicated experimental setups and reproducibility in the big data era. To start using ChIPpip, please read the README file.
 
