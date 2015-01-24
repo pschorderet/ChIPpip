@@ -25,3 +25,7 @@ ChIPpip can run the following tasks using a single command line:
 
 ### After ChIPpip
 Once ChIPpip has been run, users are literally two clicks away from metagene analysis using ChIPmE. ChIPmE is part of the NEAT toolkit and has been developed as a downstream module for ChIPpip. ChIpmE supports various steps in the process between generating .bam files to obtaining readable data for wet-lab scientists including .pdf graphs (enrichments over features), venn diagrams (overlap of peaks) and count tables. 
+
+
+### Tutorial
+A tutorial can be found in the Vignette folder. This accompanies new users through a the entire analysis of a test dataset provided as part of the package.
