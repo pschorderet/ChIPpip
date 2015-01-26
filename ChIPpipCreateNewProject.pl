@@ -22,7 +22,7 @@ print "\n ----------------------------------------------------------------------
 
 #<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 #
-`cp -r ./scripts/NewChIPseqProject/ $path2NewMainFolder`;
+`cp -r ./scripts/NewChIPpipProject/ $path2NewMainFolder`;
 #
 #<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
@@ -67,7 +67,7 @@ print "\n\t\t └─ scripts";
 print "\n\n -------------------------------------------------------------------------------------------------- \n";
 print "\n\n IMPORTANT: \t Fill in the Targets.txt file before running ChIPpipRunPipeline.pl ";
 print "\n\t\t To modify Targets.txt, copy paste the following command in your terminal:";
-print "\n\n\t\t\t nano $path2NewMainFolder/DataStructure/Targets.txt ";
+print "\n\n\t\t nano $path2NewMainFolder/DataStructure/Targets.txt ";
 print "\n";
 `ls $path2NewMainFolder`;
 print "\n\n\n *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*- \n\n\n";

@@ -9,7 +9,6 @@
 # Bwa.removePCRdup	=	"1"
 # Bwa.makeUniqueRead	=	"1"
 # Bwa.maxEditDist	=	"1"
-# Bwa.command.line	=	"bwa aln -n $ndiff"
 #
 # Filter.splitbychr	=	"1"
 # Filter.enforceinssize	=	"0"

@@ -93,7 +93,7 @@ while(<INPUT>) {
 my $AdvSettings = "$path2expFolder/DataStructure/AdvancedSettings.txt";
 open(INPUT, $AdvSettings) || die "Error opening $AdvSettings : $!\n\n\n";
 
-my ($removepcrdup, $makeunique, $ndiff, $fdr, $posopt, $densityopt, $enforceisize)	= ("NA", "NA", "NA", "NA", "NA", "NA", "NA");
+my ($removepcrdup, $makeunique, $ndiff, $bwacommand, $fdr, $posopt, $densityopt, $enforceisize)		= ("NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA");
 
 while(<INPUT>) {
 
@@ -109,6 +109,10 @@ while(<INPUT>) {
                 $_ =~ m/"(.+?)"/;
                 $ndiff = "$1";
         }
+	if (/# Bwa.command.line/) {
+                $_ =~ m/"(.+?)"/;	
+		$bwacommand = "$1";
+	}
 	if (/# PeakCaller.fdr/) {
                 $_ =~ m/"(.+?)"/;
                 $fdr = "$1";
@@ -159,6 +163,7 @@ print "\n chrlens:\t\t $chrlens";
 print "\n refGenome:\t\t $refGenome";
 print "\n";
 print "\n Paired end sequencing:\t $PE";
+print "\n Bwa.command.line:\t $bwacommand";
 print "\n Remove pcr dupl:\t $removepcr";
 print "\n Make unique reads:\t $makeunique";
 print "\n PeakCaller.fdr:\t $fdr";
@@ -187,13 +192,13 @@ my $path2iterate	= "$tmpscr/iterate";
 my $path2qsub		= "$path2iterate/qsub";
 my $path2DataStructure	= "$path2expFolder/DataStructure";
 
+unless( -d "$path2expFolder/fastq" )		{ `mkdir $path2expFolder/fastq`;	}
 unless( -d "$path2expFolder/bwa_sam" )		{ `mkdir $path2expFolder/bwa_sam`;	}
 unless( -d "$path2expFolder/bwa_saf" )		{ `mkdir $path2expFolder/bwa_saf`;	}
 unless( -d "$path2expFolder/bwa_sai" )		{ `mkdir $path2expFolder/bwa_sai`;	}
 unless( -d "$path2expFolder/bwa_sai" )		{ `mkdir $path2expFolder/bwa_sai`;	}
 unless( -d "$path2expFolder/peakcalling" )	{ `mkdir $path2expFolder/peakcalling`;	}
 unless( -d "$tmpscr" )				{ `mkdir $tmpscr`;			}
-unless( -d "$tmpscr/qsub" )			{ `mkdir $tmpscr/qsub`;			}
 unless( -d "$path2iterate" )			{ `mkdir $path2iterate`;		}
 unless( -d "$path2qsub" )			{ `mkdir $path2qsub`;			}
 
@@ -227,7 +232,6 @@ close $ChIPseqMainIterative;
 
 # Add the first iteration of the script to $SubmitJobsToCluster
 my $firstcmd    = "FIRST=`qsub -N Iterate -o $path2qsub -e $path2qsub $ChIPseqMainIterative`";
-
 my $IterateSH	= "$path2iterate/IterateSH.sh";
 open $IterateSH, ">", "$IterateSH" or die "Can't open '$IterateSH'";
 print $IterateSH "#!/bin/bash\n";
