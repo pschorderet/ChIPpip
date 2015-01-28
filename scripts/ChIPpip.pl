@@ -91,26 +91,26 @@ while(<INPUT>) {
 my $AdvSettings = "$path2expFolder/DataStructure/AdvancedSettings.txt";
 open(INPUT, $AdvSettings) || die "Error opening $AdvSettings : $!\n\n\n";
 
-my ($removepcrdup, $makeunique, $ndiff, $bwacommand, $fdr, $posopt, $densityopt, $enforceisize)		= ("NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA");
+my ($removepcrdup, $makeunique, $ndiff, $aligncommand, $fdr, $posopt, $densityopt, $enforceisize)		= ("NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA");
 
 while(<INPUT>) {
 
-	if (/# Bwa.removePCRdup/) {
-		$_ =~ m/"(.+?)"/;
-		$removepcr = "$1";
-	}
-	if (/# Bwa.makeUniqueRead/) {
-		$_ =~ m/"(.+?)"/;
-		$makeunique = "$1";
-	}
 	if (/# Bwa.maxEditDist/) {
 		$_ =~ m/"(.+?)"/;
 		$ndiff = "$1";
 	}
-	if (/# Bwa.command.line/) {
+	if (/# Align.command.line/) {
 		$_ =~ m/"(.+?)"/;
-		$bwacommand = "$1";
+		$aligncommand = "$1";
 	}
+ 	if (/# Filter.removePCRdup/) {
+		$_ =~ m/"(.+?)"/;
+		$removepcr = "$1";
+	}
+	if (/# Filter.makeUniqueRead/) {
+		$_ =~ m/"(.+?)"/;
+		$makeunique = "$1";
+ 	}
 	if (/# Filter.splitbychr/) {
 		$_ =~ m/"(.+?)"/;
 		$splitbychr = "$1";
@@ -173,7 +173,7 @@ print "\n path2fastq.gz:\t\t $path2fastqgz";
 print "\n Targets:\t\t $path2expFolder/DataStructure/Targets.txt";
 print "\n chrlens:\t\t $chrlens";
 print "\n Paired end sequencing:\t $PE";
-print "\n Bwa command line:\t $bwacommand";
+print "\n Align command line:\t $aligncommand";
 print "\n refGenome:\t\t $refGenome";
 print "\n Remove pcr dupl:\t $removepcr";
 print "\n Make unique reads:\t $makeunique";
@@ -488,9 +488,9 @@ if( $map =~ "TRUE" ){
 			#-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 			#-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+          IMPORTANT CODE HERE         -+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 		#	my $cmd		= "bwa aln -n $ndiff $refGenome $path2currentfastq > $saidir/$samplesInputs[$i]\_1.sai";
-			my $cmd		= "$bwacommand $ndiff $refGenome $path2fastq/$samplesInputs[$i]\_1.fastq > $saidir/$samplesInputs[$i]\_1.sai";
+			my $cmd		= "$aligncommand $ndiff $refGenome $path2fastq/$samplesInputs[$i]\_1.fastq > $saidir/$samplesInputs[$i]\_1.sai";
 			`echo "$cmd" >> $QSUBint`;
-			$cmd		= "$bwacommand $ndiff $refGenome $path2fastq/$samplesInputs[$i]\_2.fastq > $saidir/$samplesInputs[$i]\_2.sai";
+			$cmd		= "$aligncommand $ndiff $refGenome $path2fastq/$samplesInputs[$i]\_2.fastq > $saidir/$samplesInputs[$i]\_2.sai";
 			`echo "$cmd" >> $QSUBint`;
 			$cmd		= "bwa sampe $refGenome $saidir/$samplesInputs[$i]\_1.sai $saidir/$samplesInputs[$i]\_2.sai $path2fastq/$samplesInputs\_1.fastq $path2fastq/$samplesInputs[$i]\_2.fastq > $samdir/$samplesInputs[$i]\.sam";
 			`echo "$cmd" >> $QSUBint`;
@@ -502,7 +502,7 @@ if( $map =~ "TRUE" ){
 			#-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 			#-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+          IMPORTANT CODE HERE         -+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 		#	my $cmd		= "bwa aln -n $ndiff $refGenome $path2fastq/$samplesInputs[$i]\.fastq > $saidir/$samplesInputs[$i]\.sai"; 
-			my $cmd		= "$bwacommand $ndiff $refGenome $path2fastq/$samplesInputs[$i]\.fastq > $saidir/$samplesInputs[$i]\.sai";
+			my $cmd		= "$aligncommand $ndiff $refGenome $path2fastq/$samplesInputs[$i]\.fastq > $saidir/$samplesInputs[$i]\.sai";
 			`echo "$cmd" >> $QSUBint`;
 			my $cmd2	= "bwa samse $refGenome $saidir/$samplesInputs[$i]\.sai $path2fastq/$samplesInputs[$i]\.fastq > $samdir/$samplesInputs[$i]\.sam";
 			`echo "$cmd2" >> $QSUBint`;

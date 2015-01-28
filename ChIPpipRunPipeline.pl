@@ -93,26 +93,26 @@ while(<INPUT>) {
 my $AdvSettings = "$path2expFolder/DataStructure/AdvancedSettings.txt";
 open(INPUT, $AdvSettings) || die "Error opening $AdvSettings : $!\n\n\n";
 
-my ($removepcrdup, $makeunique, $ndiff, $bwacommand, $fdr, $posopt, $densityopt, $enforceisize)		= ("NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA");
+my ($removepcrdup, $makeunique, $ndiff, $aligncommand, $fdr, $posopt, $densityopt, $enforceisize)		= ("NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA");
 
 while(<INPUT>) {
 
-        if (/# Bwa.removePCRdup/) {
-                $_ =~ m/"(.+?)"/;
-                $removepcr = "$1";
-        }
-	if (/# Bwa.makeUniqueRead/) {
-                $_ =~ m/"(.+?)"/;
-                $makeunique = "$1";
-        }
 	if (/# Bwa.maxEditDist/) {
                 $_ =~ m/"(.+?)"/;
                 $ndiff = "$1";
         }
-	if (/# Bwa.command.line/) {
-                $_ =~ m/"(.+?)"/;	
-		$bwacommand = "$1";
+	if (/# Align.command.line/) {
+                $_ =~ m/"(.+?)"/;
+                $aligncommand = "$1";
 	}
+	if (/# Filter.removePCRdup/) {
+                $_ =~ m/"(.+?)"/;
+                $removepcr = "$1";
+        }
+	if (/# Filter.makeUniqueRead/) {
+                $_ =~ m/"(.+?)"/;
+                $makeunique = "$1";
+        }
 	if (/# PeakCaller.fdr/) {
                 $_ =~ m/"(.+?)"/;
                 $fdr = "$1";
@@ -163,7 +163,7 @@ print "\n chrlens:\t\t $chrlens";
 print "\n refGenome:\t\t $refGenome";
 print "\n";
 print "\n Paired end sequencing:\t $PE";
-print "\n Bwa.command.line:\t $bwacommand";
+print "\n Bwa.command.line:\t $aligncommand";
 print "\n Remove pcr dupl:\t $removepcr";
 print "\n Make unique reads:\t $makeunique";
 print "\n PeakCaller.fdr:\t $fdr";
