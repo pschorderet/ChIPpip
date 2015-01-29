@@ -199,7 +199,7 @@ print "\n chrlens:\t\t $chrlens";
 print "\n refGenome:\t\t $refGenome";
 print "\n";
 print "\n Paired end sequencing:\t $PE";
-print "\n Bwa.command.line:\t $aligncommand";
+print "\n Align.command.line:\t $aligncommand";
 print "\n Remove pcr dupl:\t $removepcr";
 print "\n Make unique reads:\t $makeunique";
 print "\n PeakCaller.fdr:\t $fdr";
@@ -219,8 +219,9 @@ print "\n .........................................";
 print "\n";
 print "\n Samples: ";
 foreach my $i (0 .. $#samples) {
-	print "\n\t $samples[$i] \t - \t $inpus[$i]";
+	print "\n\t $samples[$i] \t - \t $inputs[$i]";
 }
+print "\n";
 #print "\n----------------------------------------\n";
 
 

@@ -191,6 +191,11 @@ print "\n filter:\t\t $filter";
 print "\n peakcalling:\t\t $peakcalling";
 print "\n cleanbigwig:\t\t $cleanbigwig \t (remove: @lines2remove)";
 print "\n .........................................";
+print "\n Samples: ";
+foreach my $i (0 .. $#samples) {
+        print "\n\t $samples[$i] \t - \t $inputs[$i]";
+}
+print "\n";
 #print "\n";
 #print "\n----------------------------------------\n";
 
