@@ -87,9 +87,6 @@ while(<INPUT>) {
 } # end of Targets.txt
 
 
-
-
-
 my $AdvSettings = "$path2expFolder/DataStructure/AdvancedSettings.txt";
 open(INPUT, $AdvSettings) || die "Error opening $AdvSettings : $!\n\n\n";
 
@@ -135,10 +132,49 @@ while(<INPUT>) {
 
 
 #*----------------------------------------------------------------------*
+# Parse the Targets.txt file and find unique sample names of FileName and InpName
+
+my @Targets1 = `cut -f1 $Targets`;
+        chomp(@Targets1);
+my @Targets2 = `cut -f2 $Targets`;
+        chomp(@Targets2);
+my @Targets3 = `cut -f3 $Targets`;
+        chomp(@Targets3);
+my @Targets4 = `cut -f4 $Targets`;
+        chomp(@Targets4);
+
+# Store original file names in orisamples
+my @orisamples;
+foreach $line (@Targets1) {
+        $line =~ /^$/ and die "Targets 1: Blank line detected at $.\n\n";
+        $line =~ /^[# = " OriFileName FileName OriInpName InpName]/ and next;
+        push(@orisamples, $line);
+}
+my @samples;
+foreach $line (@Targets2) {
+        $line =~ /^$/ and die "Targets 1: Blank line detected at $.\n\n";
+        $line =~ /^[# = " OriFileName FileName OriInpName InpName]/ and next;
+        push(@samples, $line);
+}
+my @oriinputs;
+foreach $line (@Targets3) {
+        $line =~ /^$/ and die "Targets 3: Blank line detected at $.\n\n";
+        $line =~ /^[# = " OriFileName FileName OriInpName InpName]/ and next;
+        push(@oriinputs, $line);
+}
+my @inputs;
+foreach $line (@Targets4) {
+        $line =~ /^$/ and next;
+        $line =~ /^[# = " OriFileName FileName OriInpName InpName]/ and next;
+        push(@inputs, $line);
+}
+
+
+#*----------------------------------------------------------------------*
 # Define paths
 
-my $path2expFolder = "$userFolder/$expFolder";
-$Targets = "$path2expFolder/DataStructure/Targets.txt";
+my $path2expFolder 	= "$userFolder/$expFolder";
+$Targets 		= "$path2expFolder/DataStructure/Targets.txt";
 
 #*----------------------------------------------------------------------*
 
@@ -181,6 +217,12 @@ print "\n peakcalling:\t\t $peakcalling";
 print "\n cleanbigwig:\t\t $cleanbigwig \t (remove: @lines2remove)";
 print "\n .........................................";
 print "\n";
+print "\n Samples: ";
+foreach my $i (0 .. $#samples) {
+	print "\n\t $samples[$i] \t - \t $inpus[$i]";
+}
+#print "\n----------------------------------------\n";
+
 
 #*----------------------------------------------------------------------*
 # Create different folders if they do not exist
