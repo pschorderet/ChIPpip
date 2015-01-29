@@ -35,9 +35,14 @@ Targets <- read.delim(path2Targets, comment.char="#")
 #--------------------------------------------------
 # Create virtuel paths to all fastq
 Targets			<- read.delim(path2Targets, comment.char="#")
-samples			<- Targets$FileName
+
+#samples		<- Targets$FileName
+csamples		<- c(as.character(Targets$FileName), as.character(Targets$InpName))
+samples			<- csamples[-(which(csamples=="-"))]
+samples			<- factor(csamples)
+
 path2samplesfastq	<- paste(path2fastq, "/", samples, ".fastq", sep="")
-names(path2samplesfastq) <- Targets$FileName
+names(path2samplesfastq) <- samples
 
 #--------------------------------------------------
 # Load data in seeFastq object
