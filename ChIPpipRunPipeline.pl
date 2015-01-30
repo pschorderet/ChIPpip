@@ -251,10 +251,6 @@ my $path2fastq		= "$path2expFolder/fastq";
 
 unless( -d "$path2fastq" )			{ `mkdir $path2fastq`;			}
 unless( -d "$path2aligned" )			{ `mkdir $path2aligned`;		}
-#unless( -d "$path2expFolder/bwa_sam" )		{ `mkdir $path2expFolder/bwa_sam`;	}
-#unless( -d "$path2expFolder/bwa_saf" )		{ `mkdir $path2expFolder/bwa_saf`;	}
-#unless( -d "$path2expFolder/bwa_sai" )		{ `mkdir $path2expFolder/bwa_sai`;	}
-#unless( -d "$path2expFolder/bwa_sai" )		{ `mkdir $path2expFolder/bwa_sai`;	}
 unless( -d "$path2expFolder/peakcalling" )	{ `mkdir $path2expFolder/peakcalling`;	}
 unless( -d "$tmpscr" )				{ `mkdir $tmpscr`;			}
 unless( -d "$path2iterate" )			{ `mkdir $path2iterate`;		}

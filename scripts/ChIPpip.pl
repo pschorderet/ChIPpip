@@ -95,7 +95,7 @@ while(<INPUT>) {
 my $AdvSettings = "$path2expFolder/DataStructure/AdvancedSettings.txt";
 open(INPUT, $AdvSettings) || die "Error opening $AdvSettings : $!\n\n\n";
 
-my ($removepcrdup, $makeunique, $ndiff, $aligncommand1, $aligncommand1, $fdr, $posopt, $densityopt, $enforceisize)		= ("NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA");
+my ($removepcrdup, $makeunique, $ndiff, $aligncommand1, $aligncommand2, $fdr, $posopt, $densityopt, $enforceisize)		= ("NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA");
 
 while(<INPUT>) {
 
@@ -150,6 +150,64 @@ while(<INPUT>) {
 
 } # end of AdvancedSettings.txt
 
+
+#*----------------------------------------------------------------------*
+# Parse the Targets.txt file and find unique sample names of FileName and InpName
+
+my @Targets1 = `cut -f1 $Targets`;
+        chomp(@Targets1);
+my @Targets2 = `cut -f2 $Targets`;
+        chomp(@Targets2);
+my @Targets3 = `cut -f3 $Targets`;
+        chomp(@Targets3);
+my @Targets4 = `cut -f4 $Targets`;
+        chomp(@Targets4);
+
+# Store original file names in orisamples
+
+my @orisamples;
+foreach $line (@Targets1) {
+        $line =~ /^$/ and die "Targets 1: Blank line detected at $.\n\n";
+        $line =~ /^[# = " OriFileName FileName OriInpName InpName]/ and next;
+        push(@orisamples, $line);
+}
+
+# Store original file names in samples
+my @samples;
+foreach $line (@Targets2) {
+        $line =~ /^$/ and die "Targets 1: Blank line detected at $.\n\n";
+        $line =~ /^[# = " OriFileName FileName OriInpName InpName]/ and next;
+        push(@samples, $line);
+}
+my @oriinputs;
+foreach $line (@Targets3) {
+        $line =~ /^$/ and die "Targets 3: Blank line detected at $.\n\n";
+        $line =~ /^[# = " OriFileName FileName OriInpName InpName]/ and next;
+        push(@oriinputs, $line);
+}
+my @inputs;
+foreach $line (@Targets4) {
+        $line =~ /^$/ and next;
+        $line =~ /^[# = " OriFileName FileName OriInpName InpName]/ and next;
+        push(@inputs, $line);
+}
+
+
+#*----------------------------------------------------------------------*
+# Remove duplicated elements in the list @samples and @inputs
+%seen           = ();
+@samples        = grep { ! $seen{$_} ++ } @samples;
+@allinputs	= @inputs;
+%seen           = ();
+@inputs         = grep { ! $seen{$_} ++ } @inputs;
+@samplesInputs  = @samples;
+push (@samplesInputs, @inputs);
+
+#*----------------------------------------------------------------------*
+# Store variables into @samples
+my $cutoff	= 0.0;
+my @chrs        = `cut -f1 $chrlens`;
+chomp(@chrs);
 
 
 
@@ -211,64 +269,6 @@ print "\n";
 #print "\n";
 #print "\n----------------------------------------\n";
 
-
-#*----------------------------------------------------------------------*
-# Parse the Targets.txt file and find unique sample names of FileName and InpName
-
-my @Targets1 = `cut -f1 $Targets`;
-	chomp(@Targets1);
-my @Targets2 = `cut -f2 $Targets`;
-	chomp(@Targets2);
-my @Targets3 = `cut -f3 $Targets`;
-	chomp(@Targets3);
-my @Targets4 = `cut -f4 $Targets`;
-        chomp(@Targets4);
-
-# Store original file names in orisamples
-
-my @orisamples;
-foreach $line (@Targets1) {
-	$line =~ /^$/ and die "Targets 1: Blank line detected at $.\n\n";
-	$line =~ /^[# = " OriFileName FileName OriInpName InpName]/ and next;
-	push(@orisamples, $line);
-}
-
-# Store original file names in samples
-my @samples;
-foreach $line (@Targets2) {
-	$line =~ /^$/ and die "Targets 1: Blank line detected at $.\n\n";
-	$line =~ /^[# = " OriFileName FileName OriInpName InpName]/ and next;
-	push(@samples, $line);
-}
-my @oriinputs;
-foreach $line (@Targets3) {
-	$line =~ /^$/ and die "Targets 3: Blank line detected at $.\n\n";
-	$line =~ /^[# = " OriFileName FileName OriInpName InpName]/ and next;
-	push(@oriinputs, $line);
-}
-my @inputs;
-foreach $line (@Targets4) {
-        $line =~ /^$/ and next;
-	$line =~ /^[# = " OriFileName FileName OriInpName InpName]/ and next;
-        push(@inputs, $line);
-}
-
-
-#*----------------------------------------------------------------------*
-# Remove duplicated elements in the list @samples and @inputs
-%seen		= ();
-@samples	= grep { ! $seen{$_} ++ } @samples;
-@allinputs	= @inputs;
-%seen		= ();
-@inputs		= grep { ! $seen{$_} ++ } @inputs;
-@samplesInputs	= @samples;
-push (@samplesInputs, @inputs);
-
-#*----------------------------------------------------------------------*
-# Store variables into @samples
-my $cutoff	= 0.0;
-my @chrs	= `cut -f1 $chrlens`;
-chomp(@chrs);
 
 #*----------------------------------------------------------------------*
 # Set different paths
@@ -620,7 +620,7 @@ if( $filter =~ "TRUE" ){
 		
 		# enforce insert size rules 
 		if( $enforceisize ) {
-			print "\n Enforcing size rules for $samdir/$samplesInputs[$i]\.sam \n";
+			print "\n Enforcing size rules for $path2currentSampleDir/$samplesInputs[$i]\.sam \n";
 			open( F1,"< $path2currentSampleDir/$samplesInputs[$i]\.sam" );
 			open( F2,"> $path2currentSampleDir/$samplesInputs[$i]\.i\.sam" );
 			my $lastname = "";
